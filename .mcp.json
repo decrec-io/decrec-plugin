@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "decrec": {
+      "type": "http",
+      "url": "https://beta.decrec.io/mcp"
+    }
+  }
+}

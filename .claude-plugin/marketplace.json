@@ -1,0 +1,15 @@
+{
+  "name": "decrec",
+  "owner": {
+    "name": "DecRec",
+    "url": "https://beta.decrec.io"
+  },
+  "description": "Decision memory for people who move fast.",
+  "plugins": [
+    {
+      "name": "decrec",
+      "source": "./",
+      "description": "Record and retrieve DecRec decisions via MCP (list, search, create, explore, admit, commit)."
+    }
+  ]
+}

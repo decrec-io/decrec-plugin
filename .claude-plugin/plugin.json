@@ -1,0 +1,11 @@
+{
+  "name": "decrec",
+  "version": "2026.8.18",
+  "description": "Record and retrieve DecRec decisions via MCP (list, search, create, explore, admit, commit).",
+  "author": {
+    "name": "DecRec"
+  },
+  "homepage": "https://beta.decrec.io",
+  "repository": "https://github.com/decrec-io/decrec-skill",
+  "license": "MIT"
+}
