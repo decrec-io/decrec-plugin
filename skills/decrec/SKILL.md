@@ -2,7 +2,7 @@
 name: decrec
 description: "Records and retrieves DecRec decisions via MCP tools (list, search, create, follow-up, or commit). Use when recording, admitting, or loading a DecRec decision or DEC-n; listing or searching org decisions; exploring a DecRec brief; committing a DecRec recommendation; or when asked to update this skill."
 metadata:
-  version: "2026.8.17"
+  version: "2026.8.18"
 ---
 
 # Record a Decision into DecRec
@@ -252,7 +252,7 @@ When `stage=committed`, omit revise / decline / evidence (locked) and omit commi
 This copy's version is `metadata.version` in the frontmatter. Canonical package:
 
 ```text
-https://raw.githubusercontent.com/decrec-io/decrec-skill/main/
+https://raw.githubusercontent.com/decrec-io/decrec-skill/main/skills/decrec/
 ```
 
 Do not fetch that unless they asked to update this skill, or they said **yes** after **Tool errors**.
