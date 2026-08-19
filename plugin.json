@@ -1,8 +1,9 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "decrec",
+  "displayName": "DecRec",
   "version": "2026.8.18",
-  "description": "Record and retrieve DecRec decisions via MCP (list, search, create, explore, admit, commit).",
+  "description": "Decision memory for people who move fast.",
   "homepage": "https://beta.decrec.io",
   "repository": "https://github.com/decrec-io/decrec-skill",
   "license": "MIT",

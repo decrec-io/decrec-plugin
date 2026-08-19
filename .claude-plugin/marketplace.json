@@ -2,7 +2,8 @@
   "name": "decrec",
   "owner": {
     "name": "DecRec",
-    "url": "https://beta.decrec.io"
+    "url": "https://beta.decrec.io",
+    "email": "hello@decrec.io"
   },
   "description": "Decision memory for people who move fast.",
   "plugins": [
