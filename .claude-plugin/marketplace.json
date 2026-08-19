@@ -10,7 +10,7 @@
     {
       "name": "decrec",
       "source": "./",
-      "description": "Record and retrieve DecRec decisions via MCP (list, search, create, explore, admit, commit)."
+      "description": "Record and retrieve DecRec decisions via MCP (list, search, create, explore, admit, commit, decline, archive). Searches prior decisions before reopening a direction; catalogs pasted threads; offers to record consequential choices made in chat."
     }
   ]
 }

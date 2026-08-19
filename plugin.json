@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "decrec",
   "displayName": "DecRec",
-  "version": "2026.8.18",
+  "version": "2026.8.19",
   "description": "Decision memory for people who move fast.",
   "homepage": "https://beta.decrec.io",
   "repository": "https://github.com/decrec-io/decrec-skill",
