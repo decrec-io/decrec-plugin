@@ -3,7 +3,7 @@
   "mcpServers": {
     "decrec": {
       "type": "streamable-http",
-      "url": "https://beta.decrec.io/mcp"
+      "url": "https://decrec.io/mcp"
     }
   }
 }

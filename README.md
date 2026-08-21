@@ -6,7 +6,7 @@ This package is an [Agent Plugin](https://agent-plugins.org): a skill plus the D
 
 **MCP** (OAuth; no request headers):
 
-- URL: `https://beta.decrec.io/mcp`
+- URL: `https://decrec.io/mcp`
 
 Add the URL as a remote MCP server / custom connector. The client runs OAuth; you sign in on DecRec and Allow.
 

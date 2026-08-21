@@ -2,7 +2,7 @@
 name: decrec
 description: "Records and retrieves DecRec decisions via MCP tools (list, search, create, follow-up, commit, decline, or archive). Use when recording, admitting, or loading a DecRec decision or DEC-n; listing or searching org decisions; cataloging decision-worthy forks from a pasted conversation, Slack thread, or meeting transcript; exploring a DecRec brief; committing or declining a DecRec recommendation; archiving a decision; before a consequential choice that constrains later work or plausibly revisits an existing direction (search first—not before ordinary coding); when this chat settles such a choice—offer to record, do not auto-save trivia; or when asked to update this skill."
 metadata:
-  version: "2026.8.19"
+  version: "2026.8.21"
 ---
 
 # Record a Decision into DecRec
