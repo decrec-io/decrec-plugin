@@ -5,7 +5,8 @@
   "version": "2026.8.21",
   "description": "AI explores. You decide. DecRec remembers.",
   "homepage": "https://decrec.io",
-  "repository": "https://github.com/decrec-io/decrec-skill",
+  "repository": "https://github.com/decrec-io/decrec-plugin",
   "license": "MIT",
-  "keywords": ["decrec", "decisions", "mcp", "memory"]
+  "keywords": ["decrec", "decisions", "mcp", "memory"],
+  "logo": "logo.png"
 }

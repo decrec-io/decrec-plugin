@@ -354,7 +354,7 @@ When `stage=committed` or `stage=declined`, omit revise / evidence (locked) and 
 This copy's version is `metadata.version` in the frontmatter. Canonical package:
 
 ```text
-https://raw.githubusercontent.com/decrec-io/decrec-skill/main/skills/decrec/
+https://raw.githubusercontent.com/decrec-io/decrec-plugin/main/skills/decrec/
 ```
 
 Do not fetch that unless they asked to update this skill, or they said **yes** after **Tool errors**.
