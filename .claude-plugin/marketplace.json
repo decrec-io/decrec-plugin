@@ -5,7 +5,7 @@
     "url": "https://beta.decrec.io",
     "email": "hello@decrec.io"
   },
-  "description": "Decision memory for people who move fast.",
+  "description": "AI explores. You decide. DecRec remembers.",
   "plugins": [
     {
       "name": "decrec",

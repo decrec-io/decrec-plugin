@@ -1,12 +1,12 @@
 # DecRec
 
-Decision memory for people who move fast.
+AI explores. You decide. DecRec remembers.
 
 This package is an [Agent Plugin](https://agent-plugins.org): a skill plus the DecRec MCP server. Source: [decrec-io/decrec-skill](https://github.com/decrec-io/decrec-skill).
 
 **MCP** (OAuth; no request headers):
 
-- URL: `https://decrec.io/mcp`
+- URL: `https://beta.decrec.io/mcp`
 
 Add the URL as a remote MCP server / custom connector. The client runs OAuth; you sign in on DecRec and Allow.
 
