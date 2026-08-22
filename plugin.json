@@ -1,12 +1,19 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "decrec",
-  "displayName": "DecRec",
   "version": "2026.8.21",
   "description": "AI explores. You decide. DecRec remembers.",
+  "author": {
+    "name": "DecRec",
+    "email": "hello@decrec.io"
+  },
   "homepage": "https://decrec.io",
   "repository": "https://github.com/decrec-io/decrec-plugin",
   "license": "MIT",
   "keywords": ["decrec", "decisions", "mcp", "memory"],
-  "logo": "logo.png"
+  "extensions": {
+    "dev.kiro": {
+      "displayName": "DecRec"
+    }
+  }
 }
