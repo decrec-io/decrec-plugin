@@ -71,3 +71,59 @@ Or **Settings → Customize → Plugins** and install from that GitHub repo.
 ## Other
 
 Copy [`skills/decrec/*.md`](https://github.com/decrec-io/decrec-plugin/tree/main/skills/decrec) (`SKILL.md` and `explore-prompts.md`) into your client’s skill directory. Add an MCP connector to the MCP URL above.
+
+## Try it
+
+After install, Allow the MCP connection, then:
+
+**Live choice**
+
+```text
+Should I [option A] or [option B]?
+
+Work through it from more than one side, then record the decision in DecRec.
+```
+
+**A thread**
+
+```text
+Here is a [Slack thread / meeting notes]. What is worth recording in DecRec? Don't record until I pick.
+
+[paste]
+```
+
+**Already picked**
+
+```text
+We picked [option A] over [option B]. Record that decision in DecRec.
+```
+
+## Privacy
+
+This plugin connects to the remote MCP server at `https://decrec.io/mcp` (OAuth). DecRec stores account email, organization membership, and decision content you choose to record. Details: [Terms & data policy](https://decrec.io/legal#data). Support: [hello@decrec.io](mailto:hello@decrec.io).
+
+## Try
+
+Fill in the brackets. Paste into a new conversation after install. No existing decision required.
+
+### Live choice
+
+```text
+Should I [option A] or [option B]?
+
+Work through it from more than one side, then record the decision in DecRec.
+```
+
+### A thread
+
+```text
+Here is a [Slack thread / meeting notes]. What is worth recording in DecRec? Don't record until I pick.
+
+[paste]
+```
+
+### Already picked
+
+```text
+We picked [option A] over [option B]. Record that decision in DecRec.
+```
