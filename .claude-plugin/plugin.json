@@ -10,5 +10,5 @@
   "homepage": "https://decrec.io",
   "repository": "https://github.com/decrec-io/decrec-plugin",
   "license": "MIT",
-  "keywords": ["decrec", "decisions", "mcp", "memory"]
+  "keywords": ["decisions", "mcp", "memory", "decrec"]
 }

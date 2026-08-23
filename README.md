@@ -2,87 +2,82 @@
 
 AI explores. You decide. DecRec remembers.
 
-This package is an [Agent Plugin](https://agent-plugins.org): a skill plus the DecRec MCP server. Source: [decrec-io/decrec-plugin](https://github.com/decrec-io/decrec-plugin).
+This package is an [Agent Plugin](https://agent-plugins.org): a skill plus the DecRec MCP server. Give Claude, ChatGPT, Cursor, Codex, and other agents a shared record of the decisions you've already made. Product: [decrec.io](https://decrec.io). Source: [decrec-io/decrec-plugin](https://github.com/decrec-io/decrec-plugin).
 
-MCP: `https://decrec.io/mcp` (OAuth; no request headers). Plugin installs below connect this except where noted.
+MCP: `https://decrec.io/mcp`
 
-## Claude
+[Install](#install) · [How it works](#how-it-works) · [Why decisions](#why-decisions-not-everything) · [What the Skill does](#what-the-skill-does) · [What we learned](#what-we-learned-teaching-agents-when-to-remember) · [Privacy](#privacy)
 
-### Web and Desktop
+## Your agent forgot. DecRec didn't.
 
-Same path on both. Skill and MCP come with the plugin.
+**3 weeks ago — Claude**
 
-1. **Customize** → **Plugins** → **Add** → **Add marketplace**
-2. URL: `decrec-io/decrec-plugin`
-3. **Sync** → select **DecRec** → **Install**
-4. Allow when asked.
+> Keep accounts single-user until we validate team demand.
 
-### Claude Code
+✓ Committed as DEC-17
 
-```text
-/plugin marketplace add decrec-io/decrec-plugin
-/plugin install decrec@decrec
-```
+**Today — Cursor, fresh conversation**
 
-## ChatGPT
+> Before changing the account model: DEC-17 deliberately kept accounts single-user while validating demand. Want to revisit it?
 
-### Desktop (Work)
+One decision. Any agent.
 
-This path is **Work** only. It does not run in **Chat**.
+## How it works
 
-1. Open **Plugins** → **Add** → **Add a marketplace**.
-2. Source: `decrec-io/decrec-plugin`
-3. **Add marketplace**, then install **decrec**.
-4. Allow when asked. Start a **new Work** conversation.
-
-### Web and Desktop (Chat)
-
-The marketplace plugin does not run here. Add MCP and the skill on [chatgpt.com](https://chatgpt.com). That covers **Web** and Desktop **Chat**.
-
-MCP (tools only — no skill):
-
-1. **Plugins** → **+**
-2. Connection: **Server URL**
-3. URL: `https://decrec.io/mcp`
-4. **Create**. Allow when asked. Start a **new** conversation.
-
-Skill:
-
-1. Download ZIP from the [GitHub repo](https://github.com/decrec-io/decrec-plugin/archive/refs/heads/main.zip)
-2. **Plugins** → **Skills** → **+** → upload that zip
-
-### Codex CLI
+MCP gives the agent access to decisions. The Skill teaches it when those decisions matter.
 
 ```text
-codex plugin marketplace add decrec-io/decrec-plugin
-codex plugin add decrec@decrec
+Agent
+  ├─ Skill → judgment: when decisions matter
+  └─ MCP   → durable decision state
+               ↕
+             DecRec
 ```
 
-## Cursor
+- **Skill** — judgment: what counts as a decision, when to recall, when to capture, when to stop.
+- **MCP** — durable state: search, create, admit, commit, and archive decisions.
+- **DecRec** — the shared system of record across chats and agents.
 
-Type this in the chat input as a slash command. Do not paste it as a message to the agent.
+Tools without the skill still write; the skill without tools cannot persist across agents.
 
-```text
-/add-plugin decrec@https://github.com/decrec-io/decrec-plugin
-```
+## Why decisions, not everything?
 
-Or **Settings → Customize → Plugins** and install from that GitHub repo.
+DecRec remembers decisions, not AI output. Agents can prepare and surface records; a human commits the decision.
 
-## Other
+Your agent already has access to code, chats, docs, and project context. DecRec doesn't try to remember all of it.
 
-Copy [`skills/decrec/*.md`](https://github.com/decrec-io/decrec-plugin/tree/main/skills/decrec) (`SKILL.md` and `explore-prompts.md`) into your client’s skill directory. Add an MCP connector to the MCP URL above.
+It keeps the smaller set of choices that constrain future work:
 
-## Try it
+- what you chose
+- why
+- what you considered
+- who committed it
+- what would justify revisiting it
 
-After install, Allow the MCP connection, then:
+The goal isn't more context. It's giving a fresh agent the reasoning behind decisions already made.
+
+## What the Skill does
+
+- **Stay in scope** — don't advance past what was asked (no catalog → shape → explore → admit → commit chain unless requested).
+- **Recall** — search only at a decision boundary (consequential choice that constrains later work). Never before ordinary coding.
+- **Capture** — offer once when a consequential fork settles; never auto-create; never interrupt trivia.
+- **Humans commit** — the agent can prepare and surface records, but it does not approve briefs or place commitments.
+
+Full protocol: [`skills/decrec/SKILL.md`](skills/decrec/SKILL.md). Exploration prompts: [`skills/decrec/explore-prompts.md`](skills/decrec/explore-prompts.md).
+
+### Try it
+
+After install, allow the MCP connection, then paste one of these into a new conversation:
 
 **Live choice**
 
 ```text
-Should I [option A] or [option B]?
+Should we [option A] or [option B]?
 
 Work through it from more than one side, then record the decision in DecRec.
 ```
+
+Or substitute any real decision you're working through.
 
 **A thread**
 
@@ -98,32 +93,81 @@ Here is a [Slack thread / meeting notes]. What is worth recording in DecRec? Don
 We picked [option A] over [option B]. Record that decision in DecRec.
 ```
 
+## Install
+
+### Fast path
+
+**Cursor** — type this in the chat input as a slash command (not a message to the agent):
+
+```text
+/add-plugin decrec@https://github.com/decrec-io/decrec-plugin
+```
+
+Or **Settings → Customize → Plugins** and install from that GitHub repo.
+
+**Claude Code**
+
+```text
+/plugin marketplace add decrec-io/decrec-plugin
+/plugin install decrec@decrec
+```
+
+**Codex CLI**
+
+```text
+codex plugin marketplace add decrec-io/decrec-plugin
+codex plugin add decrec@decrec
+```
+
+### Claude (Web and Desktop)
+
+Same path on both. Skill and MCP come with the plugin.
+
+1. **Customize** → **Plugins** → **Add** → **Add marketplace**
+2. URL: `decrec-io/decrec-plugin`
+3. **Sync** → select **DecRec** → **Install**
+4. Allow when asked.
+
+### ChatGPT
+
+**Desktop (Work)** — marketplace plugin. Does not run in **Chat**.
+
+1. Open **Plugins** → **Add** → **Add a marketplace**.
+2. Source: `decrec-io/decrec-plugin`
+3. **Add marketplace**, then install **decrec**.
+4. Allow when asked. Start a **new Work** conversation.
+
+**Web and Desktop (Chat)** — marketplace plugin does not run here. Add MCP and the skill on [chatgpt.com](https://chatgpt.com).
+
+MCP (tools only — no skill):
+
+1. **Plugins** → **+**
+2. Connection: **Server URL**
+3. URL: `https://decrec.io/mcp`
+4. **Create**. Allow when asked. Start a **new** conversation.
+
+Skill:
+
+1. Download ZIP from the [GitHub repo](https://github.com/decrec-io/decrec-plugin/archive/refs/heads/main.zip)
+2. **Plugins** → **Skills** → **+** → upload that zip
+
+### Other
+
+Copy [`skills/decrec/*.md`](https://github.com/decrec-io/decrec-plugin/tree/main/skills/decrec) (`SKILL.md` and `explore-prompts.md`) into your client's skill directory. Add an MCP connector to `https://decrec.io/mcp`.
+
+## What we learned teaching agents when to remember
+
+Useful even if you never use DecRec. Steal these for your own agent skills.
+
+1. **Capture only when all three hold** — alternatives (≥2 paths), consequence (constrains later work), future relevance (someone will ask *why*).
+2. **Don't advance past the ask** — match the stage they requested; stop there.
+3. **Recall only at a decision boundary** — not before ordinary coding, bugfixes, or implementing an already-chosen approach.
+4. **Fail-fast and branch on error codes** — `locked`, `in_flight`, and `pin_mismatch` mean stop (or reload). Don't infer from the chat and retry.
+5. **Isolated role passes** — explore from clean contexts; the agent synthesizes options, the agent does not commit.
+6. **No invented facts** — don't invent stack, vendors, tenancy, or business metrics the brief doesn't state.
+
+See [`skills/decrec/SKILL.md`](skills/decrec/SKILL.md) for the full rules.
+
 ## Privacy
 
 This plugin connects to the remote MCP server at `https://decrec.io/mcp` (OAuth). DecRec stores account email, organization membership, and decision content you choose to record. Details: [Terms & data policy](https://decrec.io/legal#data). Support: [hello@decrec.io](mailto:hello@decrec.io).
-
-## Try
-
-Fill in the brackets. Paste into a new conversation after install. No existing decision required.
-
-### Live choice
-
-```text
-Should I [option A] or [option B]?
-
-Work through it from more than one side, then record the decision in DecRec.
-```
-
-### A thread
-
-```text
-Here is a [Slack thread / meeting notes]. What is worth recording in DecRec? Don't record until I pick.
-
-[paste]
-```
-
-### Already picked
-
-```text
-We picked [option A] over [option B]. Record that decision in DecRec.
-```
