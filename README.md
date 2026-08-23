@@ -105,6 +105,18 @@ We picked [option A] over [option B]. Record that decision in DecRec.
 
 Or **Settings → Customize → Plugins** and install from that GitHub repo.
 
+**VS Code** — Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`), then:
+
+```text
+Chat: Install Plugin From Source
+```
+
+Paste the GitHub URL and press Enter:
+
+```text
+https://github.com/decrec-io/decrec-plugin
+```
+
 **Claude Code**
 
 ```text
