@@ -2,7 +2,7 @@
 name: decrec
 description: "Records and retrieves DecRec decisions via MCP tools (list, search, create, follow-up, commit, decline, or archive). Use when recording, admitting, or loading a DecRec decision or DEC-n; listing or searching org decisions; cataloging decision-worthy forks from a pasted conversation, Slack thread, or meeting transcript; exploring a DecRec brief; committing or declining a DecRec recommendation; archiving a decision; before a consequential choice that constrains later work or plausibly revisits an existing direction (search first—not before ordinary coding); when this chat settles such a choice—offer to record, do not auto-save trivia; or when asked to update this skill."
 metadata:
-  version: "2026.8.21"
+  version: "2026.8.22"
 ---
 
 # Record a Decision into DecRec
@@ -49,6 +49,7 @@ If this chat is a **decision boundary** (same bar as **Capture trigger**) and th
 | Decline existing `DEC-n` | Load decision (Pins) → stop if locked / not approved / in-flight / no recommendation → **Decline** → stop |
 | Archive existing `DEC-n` | Load decision (Pins) → stop if `status=archived` → **Archive** → stop |
 | About to reopen a consequential direction (decision boundary; no `DEC-n`) | **Decision recall** → `search_decisions` → then reason |
+| Which account / org this MCP session is | `whoami` → report email + org → stop. Skip if initialize instructions already named it and they did not ask |
 | No DecRec ask; this chat just settled a consequential fork | **Capture trigger** → offer once → stop unless they accept |
 
 If a pick exists and they want it recorded, include `exploration`.
@@ -89,7 +90,7 @@ Offer in **one sentence** plus a working title (≤8 words). If they accept: **A
 
 ## Auth
 
-MCP server `decrec` must be configured in your MCP client. The server handles authentication via bearer tokens automatically.
+MCP server `decrec` must be configured in your MCP client. The server handles authentication via bearer tokens automatically. Initialize instructions already name this session (`Connected as {email} in {orgName}`). Call `whoami` only if they ask which account, or two DecRec connections might disagree. Do not call it before list, search, create, or load.
 
 ## Catalog
 
@@ -335,6 +336,14 @@ Omit `cursor` on the first page. If `nextCursor` is set, pass it as `cursor` for
 
 Show ranked hits (`displayId` + title + stage + snippet). If `matchQuality` is `"weak"`, say nothing ranked well. Then `get_decision` for pins before admit/commit/decline/archive.
 
+**`whoami`** (no args; only if they asked which account, or two DecRec connections might disagree):
+
+```json
+{}
+```
+
+Report `email`, `orgName`, and `auth` (`pat` | `oauth` | `session`). Do not echo tokens.
+
 ## Report after tool call success
 
 Emit as normal chat lines — **not** inside a fenced code block:
@@ -370,4 +379,4 @@ If fetch fails: stop; they replace the folder from wherever they installed this 
 ## References
 
 - [explore-prompts.md](explore-prompts.md) — role + synthesis prompts
-- MCP server `decrec` — provides `get_decision`, `list_decisions`, `search_decisions`, `create_decision`, `admit_exploration`, `commit_decision`, `decline_decision`, `archive_decision` tools
+- MCP server `decrec` — provides `get_decision`, `list_decisions`, `search_decisions`, `create_decision`, `admit_exploration`, `commit_decision`, `decline_decision`, `archive_decision`, `whoami` tools
