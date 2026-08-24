@@ -4,23 +4,27 @@ AI explores. You decide. DecRec remembers.
 
 This package is an [Agent Plugin](https://agent-plugins.org): a skill plus the DecRec MCP server. Give Claude, ChatGPT, Cursor, Codex, and other agents a shared record of the decisions you've already made. Product: [decrec.io](https://decrec.io). Source: [decrec-io/decrec-plugin](https://github.com/decrec-io/decrec-plugin).
 
-MCP: `https://decrec.io/mcp`
+**MCP:** [`https://decrec.io/mcp`](https://decrec.io/mcp)
 
 [Install](#install) · [How it works](#how-it-works) · [Why decisions](#why-decisions-not-everything) · [What the Skill does](#what-the-skill-does) · [What we learned](#what-we-learned-teaching-agents-when-to-remember) · [Privacy](#privacy)
 
+---
+
 ## Your agent forgot. DecRec didn't.
 
-**3 weeks ago — Claude**
+### 3 weeks ago — Claude
 
 > Keep accounts single-user until we validate team demand.
 
 ✓ Committed as DEC-17
 
-**Today — Cursor, fresh conversation**
+### Today — Cursor, fresh conversation
 
 > Before changing the account model: DEC-17 deliberately kept accounts single-user while validating demand. Want to revisit it?
 
 One decision. Any agent.
+
+---
 
 ## How it works
 
@@ -34,11 +38,15 @@ Agent
              DecRec
 ```
 
-- **Skill** — judgment: what counts as a decision, when to recall, when to capture, when to stop.
-- **MCP** — durable state: search, create, admit, commit, and archive decisions.
-- **DecRec** — the shared system of record across chats and agents.
+| Layer | Role |
+|---|---|
+| **Skill** | Judgment: what counts as a decision, when to recall, when to capture, when to stop. |
+| **MCP** | Durable state: search, create, admit, commit, and archive decisions. |
+| **DecRec** | The shared system of record across chats and agents. |
 
 Tools without the skill still write; the skill without tools cannot persist across agents.
+
+---
 
 ## Why decisions, not everything?
 
@@ -54,13 +62,18 @@ It keeps the smaller set of choices that constrain future work:
 - who committed it
 - what would justify revisiting it
 
-The goal isn't more context. It's giving a fresh agent the reasoning behind decisions already made.
+> The goal isn't more context. It's giving a fresh agent the reasoning behind decisions already made.
+
+---
 
 ## What the Skill does
 
 - **Stay in scope** — don't advance past what was asked (no catalog → shape → explore → admit → commit chain unless requested).
+
 - **Recall** — search only at a decision boundary (consequential choice that constrains later work). Never before ordinary coding.
+
 - **Capture** — offer once when a consequential fork settles; never auto-create; never interrupt trivia.
+
 - **Humans commit** — the agent can prepare and surface records, but it does not approve briefs or place commitments.
 
 Full protocol: [`skills/decrec/SKILL.md`](skills/decrec/SKILL.md). Exploration prompts: [`skills/decrec/explore-prompts.md`](skills/decrec/explore-prompts.md).
@@ -69,7 +82,7 @@ Full protocol: [`skills/decrec/SKILL.md`](skills/decrec/SKILL.md). Exploration p
 
 After install, allow the MCP connection, then paste one of these into a new conversation:
 
-**Live choice**
+#### Live choice
 
 ```text
 Should we [option A] or [option B]?
@@ -79,7 +92,7 @@ Work through it from more than one side, then record the decision in DecRec.
 
 Or substitute any real decision you're working through.
 
-**A thread**
+#### A thread
 
 ```text
 Here is a [Slack thread / meeting notes]. What is worth recording in DecRec? Don't record until I pick.
@@ -87,17 +100,31 @@ Here is a [Slack thread / meeting notes]. What is worth recording in DecRec? Don
 [paste]
 ```
 
-**Already picked**
+#### Already picked
 
 ```text
 We picked [option A] over [option B]. Record that decision in DecRec.
 ```
 
+---
+
 ## Install
+
+| Client | Start here |
+|---|---|
+| [Cursor](#cursor) | Slash command below, or Settings → Plugins |
+| [Claude Code](#claude-code) | `/plugin marketplace add` |
+| [Codex CLI](#codex-cli) | `codex plugin marketplace add` |
+| [Claude (Web and Desktop)](#claude-web-and-desktop) | Add marketplace `decrec-io/decrec-plugin` |
+| [ChatGPT](#chatgpt) | Work: marketplace plugin. Chat: MCP + skill zip |
+| [VS Code](#vs-code) | Command Palette → Chat: Install Plugin From Source |
+| [Other](#other) | Copy skill files + MCP connector |
 
 ### Fast path
 
-**Cursor** — type this in the chat input as a slash command (not a message to the agent):
+#### Cursor
+
+Type this in the chat input as a slash command (not a message to the agent):
 
 ```text
 /add-plugin decrec@https://github.com/decrec-io/decrec-plugin
@@ -105,26 +132,14 @@ We picked [option A] over [option B]. Record that decision in DecRec.
 
 Or **Settings → Customize → Plugins** and install from that GitHub repo.
 
-**VS Code** — Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`), then:
-
-```text
-Chat: Install Plugin From Source
-```
-
-Paste the GitHub URL and press Enter:
-
-```text
-https://github.com/decrec-io/decrec-plugin
-```
-
-**Claude Code**
+#### Claude Code
 
 ```text
 /plugin marketplace add decrec-io/decrec-plugin
 /plugin install decrec@decrec
 ```
 
-**Codex CLI**
+#### Codex CLI
 
 ```text
 codex plugin marketplace add decrec-io/decrec-plugin
@@ -142,43 +157,82 @@ Same path on both. Skill and MCP come with the plugin.
 
 ### ChatGPT
 
-**Desktop (Work)** — marketplace plugin. Does not run in **Chat**.
+#### Desktop (Work)
+
+Marketplace plugin. Does not run in **Chat**.
 
 1. Open **Plugins** → **Add** → **Add a marketplace**.
 2. Source: `decrec-io/decrec-plugin`
 3. **Add marketplace**, then install **decrec**.
 4. Allow when asked. Start a **new Work** conversation.
 
-**Web and Desktop (Chat)** — marketplace plugin does not run here. Add MCP and the skill on [chatgpt.com](https://chatgpt.com).
+#### Web and Desktop (Chat)
 
-MCP (tools only — no skill):
+Marketplace plugin does not run here. Add MCP and the skill on [chatgpt.com](https://chatgpt.com).
+
+**MCP** (tools only — no skill):
 
 1. **Plugins** → **+**
 2. Connection: **Server URL**
 3. URL: `https://decrec.io/mcp`
 4. **Create**. Allow when asked. Start a **new** conversation.
 
-Skill:
+**Skill:**
 
 1. Download ZIP from the [GitHub repo](https://github.com/decrec-io/decrec-plugin/archive/refs/heads/main.zip)
 2. **Plugins** → **Skills** → **+** → upload that zip
+
+### VS Code
+
+Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`), then:
+
+```text
+Chat: Install Plugin From Source
+```
+
+Paste the GitHub URL and press Enter:
+
+```text
+https://github.com/decrec-io/decrec-plugin
+```
 
 ### Other
 
 Copy [`skills/decrec/*.md`](https://github.com/decrec-io/decrec-plugin/tree/main/skills/decrec) (`SKILL.md` and `explore-prompts.md`) into your client's skill directory. Add an MCP connector to `https://decrec.io/mcp`.
 
+---
+
 ## What we learned teaching agents when to remember
 
 Useful even if you never use DecRec. Steal these for your own agent skills.
 
-1. **Capture only when all three hold** — alternatives (≥2 paths), consequence (constrains later work), future relevance (someone will ask *why*).
-2. **Don't advance past the ask** — match the stage they requested; stop there.
-3. **Recall only at a decision boundary** — not before ordinary coding, bugfixes, or implementing an already-chosen approach.
-4. **Fail-fast and branch on error codes** — `locked`, `in_flight`, and `pin_mismatch` mean stop (or reload). Don't infer from the chat and retry.
-5. **Isolated role passes** — explore from clean contexts; the agent synthesizes options, the agent does not commit.
-6. **No invented facts** — don't invent stack, vendors, tenancy, or business metrics the brief doesn't state.
+### 1. Capture only when all three hold
+
+Alternatives (≥2 paths), consequence (constrains later work), future relevance (someone will ask *why*).
+
+### 2. Don't advance past the ask
+
+Match the stage they requested; stop there.
+
+### 3. Recall only at a decision boundary
+
+Not before ordinary coding, bugfixes, or implementing an already-chosen approach.
+
+### 4. Fail-fast and branch on error codes
+
+`locked`, `in_flight`, and `pin_mismatch` mean stop (or reload). Don't infer from the chat and retry.
+
+### 5. Isolated role passes
+
+Explore from clean contexts; the agent synthesizes options, the agent does not commit.
+
+### 6. No invented facts
+
+Don't invent stack, vendors, tenancy, or business metrics the brief doesn't state.
 
 See [`skills/decrec/SKILL.md`](skills/decrec/SKILL.md) for the full rules.
+
+---
 
 ## Privacy
 
