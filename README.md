@@ -41,7 +41,7 @@ Agent
 | Layer | Role |
 |---|---|
 | **Skill** | Judgment: what counts as a decision, when to recall, when to capture, when to stop. |
-| **MCP** | Durable state: search, create, admit, commit, and archive decisions. |
+| **MCP** | Durable state: search, create, update, admit, commit, and archive decisions. |
 | **DecRec** | The shared system of record across chats and agents. |
 
 Tools without the skill still write; the skill without tools cannot persist across agents.
@@ -68,13 +68,13 @@ It keeps the smaller set of choices that constrain future work:
 
 ## What the Skill does
 
-- **Stay in scope** — don't advance past what was asked (no catalog → shape → explore → admit → commit chain unless requested).
+- **Stay in scope** — don't advance past what was asked (no catalog → shape → update → explore → admit → commit chain unless requested).
 
 - **Recall** — search only at a decision boundary (consequential choice that constrains later work). Never before ordinary coding.
 
 - **Capture** — offer once when a consequential fork settles; never auto-create; never interrupt trivia.
 
-- **Humans commit** — the agent can prepare and surface records, but it does not approve briefs or place commitments.
+- **Humans commit** — the agent can prepare and surface records, but it does not place commitments.
 
 Full protocol: [`skills/decrec/SKILL.md`](skills/decrec/SKILL.md). Exploration prompts: [`skills/decrec/explore-prompts.md`](skills/decrec/explore-prompts.md).
 

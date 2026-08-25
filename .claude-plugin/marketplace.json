@@ -14,7 +14,7 @@
       "category": "productivity",
       "tags": ["decisions", "mcp", "memory", "decrec"],
       "homepage": "https://decrec.io",
-      "description": "Record and retrieve DecRec decisions via MCP (list, search, create, explore, admit, commit, decline, archive). Searches prior decisions before reopening a direction; catalogs pasted threads; offers to record consequential choices made in chat."
+      "description": "Record and retrieve DecRec decisions via MCP (list, search, create, update, explore, admit, commit, decline, archive). Searches prior decisions before reopening a direction; catalogs pasted threads; offers to record consequential choices made in chat."
     }
   ]
 }
