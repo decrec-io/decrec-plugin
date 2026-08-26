@@ -2,11 +2,45 @@
 
 AI explores. You decide. DecRec remembers.
 
-This package is an [Agent Plugin](https://agent-plugins.org): a skill plus the DecRec MCP server. Give Claude, ChatGPT, Cursor, Codex, and other agents a shared record of the decisions you've already made. Product: [decrec.io](https://decrec.io). Source: [decrec-io/decrec-plugin](https://github.com/decrec-io/decrec-plugin).
+Shared decision memory across Claude, ChatGPT, Cursor, Codex, and other agents.
 
-**MCP:** [`https://decrec.io/mcp`](https://decrec.io/mcp)
+![ChatGPT records DEC-8; Cursor recalls it three weeks later.](demo-poster-play.jpg)
 
-[Install](#install) · [How it works](#how-it-works) · [Why decisions](#why-decisions-not-everything) · [What the Skill does](#what-the-skill-does) · [What we learned](#what-we-learned-teaching-agents-when-to-remember) · [Privacy](#privacy)
+---
+
+[Install](#install-in-30-seconds) · [Docs](https://decrec.io/docs) · [How it works](#how-it-works) · [Why decisions](#why-decisions-not-everything) · [What the Skill does](#what-the-skill-does) · [What we learned](#what-we-learned-teaching-agents-when-to-remember) · [Privacy](#privacy)
+
+---
+
+## Install in 30 seconds
+
+This package is an [Agent Plugin](https://agent-plugins.org): a skill plus the DecRec MCP server.
+
+### In Cursor
+
+Type this in the chat input as a slash command:
+
+```text
+/add-plugin decrec@https://github.com/decrec-io/decrec-plugin
+```
+
+Or **Settings → Customize → Plugins** and install from that GitHub repo.
+
+### In Claude Code
+
+```text
+/plugin marketplace add decrec-io/decrec-plugin
+/plugin install decrec@decrec
+```
+
+### In Codex CLI
+
+```text
+codex plugin marketplace add decrec-io/decrec-plugin
+codex plugin add decrec@decrec
+```
+
+[All clients →](#install)
 
 ---
 
@@ -38,11 +72,13 @@ Agent
              DecRec
 ```
 
-| Layer | Role |
-|---|---|
-| **Skill** | Judgment: what counts as a decision, when to recall, when to capture, when to stop. |
-| **MCP** | Durable state: search, create, update, admit, commit, and archive decisions. |
-| **DecRec** | The shared system of record across chats and agents. |
+
+| Layer      | Role                                                                                |
+| ---------- | ----------------------------------------------------------------------------------- |
+| **Skill**  | Judgment: what counts as a decision, when to recall, when to capture, when to stop. |
+| **MCP**    | Durable state: search, create, update, admit, commit, and archive decisions.        |
+| **DecRec** | The shared system of record across chats and agents.                                |
+
 
 Tools without the skill still write; the skill without tools cannot persist across agents.
 
@@ -110,21 +146,19 @@ We picked [option A] over [option B]. Record that decision in DecRec.
 
 ## Install
 
-| Client | Start here |
-|---|---|
-| [Cursor](#cursor) | Slash command below, or Settings → Plugins |
-| [Claude Code](#claude-code) | `/plugin marketplace add` |
-| [Codex CLI](#codex-cli) | `codex plugin marketplace add` |
-| [Claude (Web and Desktop)](#claude-web-and-desktop) | Add marketplace `decrec-io/decrec-plugin` |
-| [ChatGPT](#chatgpt) | Work: marketplace plugin. Chat: MCP + skill zip |
-| [VS Code](#vs-code) | Command Palette → Chat: Install Plugin From Source |
-| [Other](#other) | Copy skill files + MCP connector |
+| Client                                              | Start here                                         |
+| --------------------------------------------------- | -------------------------------------------------- |
+| [Cursor](#cursor)                                   | Slash command below, or Settings → Plugins         |
+| [Claude Code](#claude-code)                         | `/plugin marketplace add`                          |
+| [Codex CLI](#codex-cli)                             | `codex plugin marketplace add`                     |
+| [Claude (Web and Desktop)](#claude-web-and-desktop) | Add marketplace `decrec-io/decrec-plugin`          |
+| [ChatGPT](#chatgpt)                                 | Work: marketplace plugin. Chat: MCP + skill zip    |
+| [VS Code](#vs-code)                                 | Command Palette → Chat: Install Plugin From Source |
+| [Other](#other)                                     | Copy skill files + MCP connector                   |
 
-### Fast path
+### Cursor
 
-#### Cursor
-
-Type this in the chat input as a slash command (not a message to the agent):
+Type this in the chat input as a slash command:
 
 ```text
 /add-plugin decrec@https://github.com/decrec-io/decrec-plugin
@@ -132,14 +166,14 @@ Type this in the chat input as a slash command (not a message to the agent):
 
 Or **Settings → Customize → Plugins** and install from that GitHub repo.
 
-#### Claude Code
+### Claude Code
 
 ```text
 /plugin marketplace add decrec-io/decrec-plugin
 /plugin install decrec@decrec
 ```
 
-#### Codex CLI
+### Codex CLI
 
 ```text
 codex plugin marketplace add decrec-io/decrec-plugin
