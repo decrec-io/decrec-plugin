@@ -46,15 +46,16 @@ codex plugin add decrec@decrec
 
 ## Your agent forgot. DecRec didn't.
 
-### 3 weeks ago — Claude
+### 3 weeks ago — ChatGPT
 
 > Keep accounts single-user until we validate team demand.
 
-✓ Committed as DEC-17
+✓ Committed as DEC-8
 
 ### Today — Cursor, fresh conversation
 
-> Before changing the account model: DEC-17 deliberately kept accounts single-user while validating demand. Want to revisit it?
+> Before changing the account model: DEC-8 deliberately kept accounts
+> single-user while validating demand. Want to revisit it?
 
 One decision. Any agent.
 
