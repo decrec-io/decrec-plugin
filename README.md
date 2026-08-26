@@ -4,7 +4,7 @@ AI explores. You decide. DecRec remembers.
 
 Shared decision memory across Claude, ChatGPT, Cursor, Codex, and other agents.
 
-[![ChatGPT records DEC-8; Cursor recalls it three weeks later.](demo-poster-play.jpg)](https://decrec.io/decrec-demo.mp4)
+[![ChatGPT records DEC-8; Cursor recalls it three weeks later.](demo-poster-play.jpg)](https://decrec.io/#demo)
 
 ---
 
