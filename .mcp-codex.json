@@ -1,0 +1,6 @@
+{
+  "decrec": {
+    "type": "streamable-http",
+    "url": "https://decrec.io/mcp"
+  }
+}

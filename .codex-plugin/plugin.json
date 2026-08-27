@@ -1,0 +1,26 @@
+{
+  "name": "decrec",
+  "version": "2026.8.23",
+  "description": "AI explores. You decide. DecRec remembers.",
+  "author": {
+    "name": "DecRec",
+    "email": "hello@decrec.io",
+    "url": "https://decrec.io"
+  },
+  "homepage": "https://decrec.io",
+  "repository": "https://github.com/decrec-io/decrec-plugin",
+  "license": "MIT",
+  "keywords": ["decisions", "mcp", "memory", "decrec"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp-codex.json",
+  "interface": {
+    "displayName": "DecRec",
+    "shortDescription": "Shared decision memory across AI agents",
+    "developerName": "DecRec",
+    "category": "Productivity",
+    "websiteURL": "https://decrec.io",
+    "privacyPolicyURL": "https://decrec.io/legal#data",
+    "termsOfServiceURL": "https://decrec.io/legal#terms",
+    "logo": "./logo.png"
+  }
+}
