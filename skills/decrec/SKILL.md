@@ -2,7 +2,7 @@
 name: decrec
 description: "Records and retrieves DecRec decisions via MCP tools (list, search, create, update, follow-up, commit, decline, or archive). Use when recording, admitting, updating, or loading a DecRec decision or DEC-n; listing or searching org decisions; cataloging decision-worthy forks from a pasted conversation, Slack thread, or meeting transcript; exploring a DecRec brief; committing or declining a DecRec recommendation; archiving a decision; before a consequential choice that constrains later work or plausibly revisits an existing direction (search first—not before ordinary coding); when this chat settles such a choice—offer to record, do not auto-save trivia; or when asked to update this skill."
 metadata:
-  version: "2026.8.23"
+  version: "2026.8.27"
 ---
 
 # Record a Decision into DecRec
@@ -10,8 +10,8 @@ metadata:
 ## Hard rules
 
 - **Pause:** don’t advance past what they asked (no catalog → shape → update → explore → admit → commit/decline/archive chain unless asked).
-- **Recall:** conservative — same decision-boundary bar as **Capture trigger**. Search only when this chat is about a consequential choice that constrains later work or plausibly revisits an existing direction. Never before ordinary coding. Don’t block the user’s work if search isn’t available.
-- **Capture:** one offer for a live consequential fork (see **Capture trigger**); never auto-Create; never interrupt trivia. Pasted dumps → **Catalog**.
+- **Recall:** conservative — **Decision-worthy** only. Never before ordinary coding. Don’t block the user’s work if search isn’t available.
+- **Capture:** one offer for a live **Decision-worthy** fork (see **Capture trigger**); never auto-Create; never interrupt trivia. Pasted dumps → **Catalog**.
 - **Finality:** Thread “we decided / let’s go with / settled / ship it” is a preferred path, not a DecRec commit. Catalog it; do not skip as already done unless they say it is recorded elsewhere and should be skipped.
 - **Auth:** MCP server `decrec` must be configured. Never echo tokens.
 - **Commit / Decline:** Load decision first (call `get_decision`); take `explorationRunId` from `recommendation` (don’t invent; don’t send the whole object). **Commit** in this skill is DecRec only — not `git commit`. Decline is “we decided not to” (no Commitment row).
@@ -25,7 +25,7 @@ metadata:
 
 Match the **most specific** row. Don’t advance to a later stage (shape/update/explore/admit/commit/decline/archive) unless they asked for it. Clarifying a thin brief during **Shape** / **Explore** is part of that stage — not a one-shot requirement.
 
-If this chat is a **decision boundary** (same bar as **Capture trigger**) and they didn’t name a `DEC-n`, run **Decision recall** first, then the matched row. Ordinary coding, bugfixes, and implementing an already-chosen approach do **not** qualify.
+If this chat is **Decision-worthy** and they didn’t name a `DEC-n`, run **Decision recall** first, then the matched row. Ordinary coding, bugfixes, and implementing an already-chosen approach do **not** qualify.
 
 **Tip** = the current brief version (`briefVersion` + `brief` from response). Update, Explore-existing, Follow-up, Commit, and Decline target that tip.
 
@@ -49,41 +49,47 @@ If this chat is a **decision boundary** (same bar as **Capture trigger**) and th
 | Commit existing `DEC-n` | Load decision (Pins) → stop if locked / not approved / in-flight / no recommendation → **Commit** → stop |
 | Decline existing `DEC-n` | Load decision (Pins) → stop if locked / not approved / in-flight / no recommendation → **Decline** → stop |
 | Archive existing `DEC-n` | Load decision (Pins) → stop if `status=archived` → **Archive** → stop |
-| About to reopen a consequential direction (decision boundary; no `DEC-n`) | **Decision recall** → `search_decisions` → then reason |
+| About to reopen a **Decision-worthy** direction (no `DEC-n`) | **Decision recall** → `search_decisions` → then reason |
 | Which account / org this MCP session is | `whoami` → report email + org → stop. Skip if initialize instructions already named it and they did not ask |
-| No DecRec ask; this chat just settled a consequential fork | **Capture trigger** → offer once → stop unless they accept |
+| No DecRec ask; this chat just settled a **Decision-worthy** fork | **Capture trigger** → offer once → stop unless they accept |
 
 If a pick exists and they want it recorded, include `exploration`.
 
 If the original ask includes more than one stage (e.g. catalog and admit, or explore and admit), do them in order. After Catalog, **Shape** only picked rows; continue to **Create** / **Explore** only when that was in the ask. After **Update**, show the new tip; continue to **Explore** / **Follow-up** only when that was in the ask (Follow-up only if the brief did not change — otherwise the pick belonged on **Update**). After Explore, show the draft; continue to **Create** / **Update** / **Follow-up** only when admit was in that ask; continue to **Commit** / **Decline** / **Archive** only when that action was in that ask.
 
-## Decision recall
+## Decision-worthy
 
-Decision recall happens before reasoning — only at a **decision boundary**, the same heuristic as **Capture trigger** (all three: alternatives, consequence, future relevance). Before materially reconsidering a consequential product, technical, operational, or company direction, search DecRec for relevant prior decisions when doing so could prevent reopening settled reasoning or contradicting an existing commitment.
-
-Do **not** search before every coding task. Ordinary implementation, bugfixes, refactors inside an already-chosen approach, and trivia are not recall.
-
-`search_decisions` (not list). One clear hit → `get_decision`. Several → show `displayId` + title + stage; load the one that would constrain this ask. `matchQuality: "weak"` → say nothing ranked well; still show hits; proceed with reasoning. Do not claim the org has no decisions.
-
-Cite prior decisions before proposing a conflicting path. A `committed` hit is a constraint unless they explicitly want to reopen. Do not auto-admit, update, explore, commit, or decline from recall. If they also asked to Shape / Explore / admit, search first, then continue that path.
-
-**Recall (search first):** changing local-first vs server-authoritative; replacing the system of record; revisiting one-user-one-org; dropping the review gate before exploration.
-
-**Skip (don’t search):** trivia (same examples as **Capture trigger**); implementing or extending an already-chosen approach; this chat already searched or loaded this topic; they named a `DEC-n` (Load that). MCP missing / `unauthorized` → continue their work; don’t Stop the whole turn.
-
-## Capture trigger
-
-When this chat produces a consequential choice between plausible alternatives—especially one that establishes a constraint, selects an approach, or closes an issue likely to be revisited—briefly offer to record it in DecRec. Do not record automatically. Do not interrupt trivia.
-
-Finish the work they asked for first. Then offer only if **all three** are true:
+A fork is decision-worthy when **all three** are true:
 
 - **Alternatives:** ≥2 credible paths were on the table (including do-nothing / defer)
 - **Consequence:** the choice meaningfully constrains later work (architecture, product, process, a constraint)
 - **Future relevance:** another human or agent could reasonably ask *why did we do this?*
 
-**Offer (record-worthy):** first version around local-first sync vs server-authoritative state; Postgres vs Dynamo as system of record; reviews gate exploration, not the reverse; one user belongs to at most one org.
+Judge the *direction*, not the action. A sent email cannot be unsent — that alone is not Consequence.
 
-**Don’t offer (trivia):** tabs vs spaces; local names; Tailwind spacing; temporary debug logs; which of two independent tickets to implement today; any easily reversible implementation detail.
+**Yes:** Postgres vs Dynamo as system of record; public API contract vs internal-only; usage-based vs seat pricing.
+
+**No:** tabs vs spaces; local names; Tailwind spacing; temporary debug logs; which of two independent tickets to implement today; easily reversible implementation details; copy/outreach/sequence trials; temporary workflows.
+
+**Recall**, **Capture trigger**, and **Catalog** share this bar. If uncertain: Recall does not search; Capture does not offer; Catalog still lists the row.
+
+## Decision recall
+
+Search before reasoning — only when this chat is **Decision-worthy** and they didn’t name a `DEC-n`. Before materially reconsidering a consequential product, technical, operational, or company direction, search DecRec for relevant prior decisions when doing so could prevent reopening settled reasoning or contradicting an existing commitment.
+
+Do **not** search before ordinary implementation, bugfixes, or refactors inside an already-chosen approach.
+
+`search_decisions` (not list). One clear hit → `get_decision`. Several → show `displayId` + title + stage; load the one that would constrain this ask. `matchQuality: "weak"` → say nothing ranked well; still show hits; proceed with reasoning. Do not claim the org has no decisions.
+
+Cite prior decisions before proposing a conflicting path. A `committed` hit is a constraint unless they explicitly want to reopen. Do not auto-admit, update, explore, commit, or decline from recall. If they also asked to Shape / Explore / admit, search first, then continue that path.
+
+**Skip (don’t search):** this chat already searched or loaded this topic; they named a `DEC-n` (Load that). MCP missing / `unauthorized` → continue their work; don’t Stop the whole turn.
+
+## Capture trigger
+
+When this chat produces a **Decision-worthy** choice, briefly offer to record it in DecRec. Do not record automatically.
+
+Finish the work they asked for first. Then offer only if it is **Decision-worthy**. If uncertain, do not offer — they can still ask to record.
 
 Pasted dump / transcript → **Catalog**, not this. Already in Catalog / Shape / Explore / admit / update / commit / decline / archive for that fork → don’t re-offer. They declined or ignored this fork in this chat → don’t nag.
 
@@ -95,19 +101,15 @@ MCP server `decrec` must be configured in your MCP client. The server handles au
 
 ## Catalog
 
-For a pasted Slack thread, meeting notes, email, or transcript: find decision-worthy forks. Do not call tools. Do not Shape, Explore, or admit until they pick — and only as far as they asked.
+For a pasted Slack thread, meeting notes, email, or transcript: find **Decision-worthy** forks. Do not call tools. Do not Shape, Explore, or admit until they pick — and only as far as they asked.
 
 Require the conversation text. If missing, ask once.
 
-Include forks where **all** are true:
-
-- Real fork (≥2 plausible paths, including do-nothing / defer) — even if the group leaned or “decided”
-- Choosing (or confirming) the path has meaningful consequence
-- A decision moment: open question, disagreement, blocked work, **or** apparent agreement / “we decided X”
+Include forks that are **Decision-worthy** and have a decision moment: open question, disagreement, blocked work, **or** apparent agreement / “we decided X” — even if the group leaned or “decided.”
 
 **Always include (high priority):** moments that sound decided — capture them so the preferred path is not lost. Do not drop them as “already done.”
 
-**Exclude:** status/FYI with no fork, brainstorms with no pressure to choose, tasks with no strategic fork, vague aspirations, meta-process unless the decision *is* the process. Do **not** exclude because speakers used decided/settled language.
+**Exclude:** status/FYI with no fork, brainstorms with no pressure to choose, tasks with no strategic fork, vague aspirations, meta-process unless the decision *is* the process. Do **not** exclude because speakers used decided/settled language. If unsure a row is **Decision-worthy**, still show it — they pick.
 
 If nothing qualifies, say so. Do not invent decisions.
 
