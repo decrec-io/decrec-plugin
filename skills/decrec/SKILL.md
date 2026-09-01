@@ -1,8 +1,8 @@
 ---
 name: decrec
-description: "Records and retrieves DecRec decisions via MCP tools (list, search, create, update, follow-up, commit, decline, or archive). Use when recording, admitting, updating, or loading a DecRec decision or DEC-n; listing or searching org decisions; cataloging decision-worthy forks from a pasted conversation, Slack thread, or meeting transcript; exploring a DecRec brief; committing or declining a DecRec recommendation; archiving a decision; before a consequential choice that constrains later work or plausibly revisits an existing direction (search first—not before ordinary coding); when this chat settles such a choice—offer to record, do not auto-save trivia."
+description: "Records and retrieves DecRec decisions via MCP tools (list, search, create, update, follow-up, commit, decline, archive, or list/get councils). Use when recording, admitting, updating, or loading a DecRec decision or DEC-n; listing or searching org decisions; cataloging decision-worthy forks from a pasted conversation, Slack thread, or meeting transcript; exploring a DecRec brief; committing or declining a DecRec recommendation; archiving a decision; before a consequential choice that constrains later work or plausibly revisits an existing direction (search first—not before ordinary coding); when this chat settles such a choice—offer to record, do not auto-save trivia."
 metadata:
-  version: "2026.8.31"
+  version: "2026.9.1"
 ---
 
 ## Pick a Route
@@ -112,18 +112,23 @@ If several distinct decision candidates appear and this is a dumped conversation
   - **Fields** in this order: `problem`, `evidenceSummary`, `assumptions`, `constraints`, `desiredOutcome`, `risks`. Pain/outcome is not a pick — pick lives in synthesis. Thread “use X” → reframe problem/outcome; leave X for the pick.
   - **Empty fields:** Tools require every field non-empty. Where the thread has nothing, use `"unspecified"` (do not invent). Prefer a single honest unknown in `assumptions` over stamping every thin field.
   - **Gap round** if too thin to defend — especially missing `problem` or `desiredOutcome`: ask ≤3 bullets, **stop and wait**; on reply continue. Skip gap round when this Shape is the brief source for **Explore** (Densify covers thin intake).
-2. If admitting a pick: send `exploration: { synthesis, roles? }`. Put `optionsConsidered`, `preferredOption`, `tradeoffs`, `confidence`, `unresolvedQuestions`, and `disagreementHighlights` **inside `synthesis`** — not on `exploration`. Prefer 2–3 `optionsConsidered` (max 4), each `{ title, summary, tradeoffs }` from the thread; mutually distinct paths; `preferredOption` equals one `title`. `confidence` = `medium` if they stated the pick firmly, else `low`. Remaining synthesis strings from the thread, else `"unspecified"` — do not invent disagreements. Include all three `roles` only if those essays already exist in thread — otherwise omit `roles`. Never partial. Skip **Explore** only when admitting without an explore ask and a preferred option plus ≥2 distinct alternatives already exist (including this chat’s Explore draft). Never invent a pick just to unlock admit. Never run **Explore** only to fill `roles`.
+2. If admitting a pick: send `exploration: { synthesis, roles? }`. Put `optionsConsidered`, `preferredOption`, `tradeoffs`, `confidence`, `unresolvedQuestions`, and `disagreementHighlights` **inside `synthesis`** — not on `exploration`. Prefer 2–3 `optionsConsidered` (max 4), each `{ title, summary, tradeoffs }` from the thread; mutually distinct paths; `preferredOption` equals one `title`. `confidence` = `medium` if they stated the pick firmly, else `low`. Remaining synthesis strings from the thread, else `"unspecified"` — do not invent disagreements. Include `roles` as an array of `{ id, label, result }` only if those essays already exist in thread — otherwise omit `roles`. Never partial. Skip **Explore** only when admitting without an explore ask and a preferred option plus ≥2 distinct alternatives already exist (including this chat’s Explore draft). Never invent a pick just to unlock admit. Never run **Explore** only to fill `roles`.
 3. Do not call tools unless this Shape is for admit or update. Draft / frame only (no write verb) → stop after mapping; do not Create or Update. If admitting a new DEC: **Create**. If updating framing on an existing DEC: **Update** (include `exploration` if admitting a pick). If same brief, new pick: **Follow-up**. If **Explore** is next or already in progress, continue **Explore** with the mapped brief — do not end the skill.
 
 ## Explore
 
 Run the council in this chat with [explore-prompts.md](explore-prompts.md). If they asked to explore (from scratch, `DEC-n`, or re-explore), run even if a pick or loaded `recommendation` already exists. Never run Explore only to fill `roles`. When the decision is about this project, read and cite the open workspace. Do not invent stack, vendors, tenancy, or factual business metrics unless the brief, attachments, or workspace state them; proposing success metrics is allowed.
 
+**Council pick (before role passes):**
+- One-off roster named in this chat → use that roster; do **not** call `list_councils`; do **not** auto-save to Settings.
+- Named saved council, or this chat already used one for this DEC → `get_council` with that name or id; skip list unless they asked to change.
+- Else → `list_councils`, pick from the brief using name + role labels; then `get_council` with that `councilId`. None fit → `get_council()` with no args (org default, including focus). Do not infer default from `isDefault` on the list then get — use no-args get.
+
 1. Brief source: from scratch → **Shape** from the thread (no gap round); existing `DEC-n` → **Load**. **Stop** if `isLocked` / `!isApproved` / `activeExploration` — locked cannot reopen in place; unapproved → approve at the `url`; in-flight → wait or cancel at the `url`. Else tip as-is (no reshape, no Densify — skip step 2).
 2. **Densify** (from-scratch only): before role passes, assess intake gaps that would materially change options or confidence (including a missing `problem` or `desiredOutcome`; e.g. who it's for, hard limits, success criteria). This fills evidence / assumptions / constraints / risks so roles start fuller — it is **not** later `openQuestions` / `unresolvedQuestions`. If gaps remain: ask **once** (prefer ≤5; skip trivia), **stop and wait**; do not confirm the brief or run roles in the same turn. On reply, fold answers into the brief; skipped / “unknown” / “proceed anyway” → `"unspecified"`. If already dense, skip this ask. Then show title + brief, wait for **yes**, then roles. If still blocked on naming any option, proceed and leave it in synthesis open questions. Otherwise do not interview beyond that.
-3. Three role passes — same title and brief each; clean context per pass (parallel isolated contexts when available, else sequential). See `explore-prompts.md`. Isolated contexts do not have this skill: send the explore-prompts.md role prompt (including Shared grounding) + title/brief + cited files. They may read the workspace; they must not edit it.
+3. Role passes (2–4 from the chosen council) — same title and brief each; clean context per pass (parallel isolated contexts when available, else sequential). See `explore-prompts.md`. Isolated contexts do not have this skill: send the explore-prompts.md role prompt (including Shared grounding) + title/brief + cited files. Substitute `{Role label}` + `{focus}` from `get_council` / the one-off. They may read the workspace; they must not edit it.
 4. Synthesis pass on verbatim role outputs (`explore-prompts.md`).
-5. Show draft; **stop** unless also asked to admit, Commit, or Decline. Named Commit / Decline on this draft implies admit first — don’t Commit / Decline the loaded `recommendation`. When admitting after Explore: new DEC → **Create** with `exploration`; existing DEC, brief changed → **Update** with `exploration`; existing DEC, same brief → **Follow-up**. Then Commit / Decline only if that was in the ask. Send `exploration` with `synthesis` plus all three `roles` (never partial). Do not implement the pick unless they asked — exploring or recording is not a request to implement it.
+5. Show draft; **stop** unless also asked to admit, Commit, or Decline. Named Commit / Decline on this draft implies admit first — don’t Commit / Decline the loaded `recommendation`. When admitting after Explore: new DEC → **Create** with `exploration`; existing DEC, brief changed → **Update** with `exploration`; existing DEC, same brief → **Follow-up**. Then Commit / Decline only if that was in the ask. Send `exploration` with `synthesis` plus `roles` as an array of every council role `{ id, label, result }` (never partial). Do not implement the pick unless they asked — exploring or recording is not a request to implement it.
 
 **Quality:** Prefer 2–3 options (max 4). `preferredOption` must match one `optionsConsidered[].title`; options must be mutually distinct paths (not restatements of the preferred option). After role passes: at least one material cross-role disagreement in `disagreementHighlights`. When `roles` omitted, do not invent disagreement.
 
@@ -228,6 +233,8 @@ Top-level shapes:
 | `get_decision` | `decRef` |
 | `list_decisions` | optional `limit`, `cursor` (omit `cursor` on the first page) |
 | `search_decisions` | `query` |
+| `list_councils` | (none) |
+| `get_council` | optional `councilRef` (uuid or name; omit → org default) |
 | `whoami` | (none) |
 
 ## Report
@@ -269,4 +276,4 @@ If fetch fails: stop; they replace the folder from wherever they installed this 
 ## References
 
 - [explore-prompts.md](explore-prompts.md) — role + synthesis prompts
-- MCP server `decrec` — provides `get_decision`, `list_decisions`, `search_decisions`, `create_decision`, `update_decision`, `admit_exploration`, `commit_decision`, `decline_decision`, `archive_decision`, `whoami` tools
+- MCP server `decrec` — provides `get_decision`, `list_decisions`, `search_decisions`, `create_decision`, `update_decision`, `admit_exploration`, `commit_decision`, `decline_decision`, `archive_decision`, `list_councils`, `get_council`, `whoami` tools

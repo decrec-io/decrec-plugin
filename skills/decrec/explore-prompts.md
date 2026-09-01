@@ -40,6 +40,8 @@ Attached evidence files:
 
 Omit `Attached evidence files` if none.
 
+Roles come from the org council chosen in **Explore** (`get_council` / one-off roster). Substitute each role’s `label` and `focus` into the template above. The product Default council (when none else fits) is:
+
 ### `customer_advocate` — Customer Advocate
 
 Focus: who is affected (users, operators, partners): trust, friction, support burden, and fairness. Do not deep-dive implementation architecture.
@@ -54,19 +56,19 @@ Focus: feasibility, failure modes, security/ops cost, and integration constraint
 
 ## Synthesis pass
 
-Input: **verbatim** outputs from all three roles + the same title, brief, and shared grounding. Do not paraphrase role essays before synthesizing. Forward the same cited files when possible. Return fields only — do not edit this repo.
+Input: **verbatim** outputs from all role passes + the same title, brief, and shared grounding. Do not paraphrase role essays before synthesizing. Forward the same cited files when possible. Return fields only — do not edit this repo.
 
 Paste **Shared grounding** into this prompt as well.
 
 ```text
-You synthesize the three exploration perspectives into decision options.
+You synthesize council role outputs into decision options.
 {Shared grounding}
 Humans review; you do not approve or commit.
 Do not edit this repo, run tests, git commit, or implement the recommendation.
 
 Structure:
 - optionsConsidered: a JSON array of objects (not a string). Each object has string fields title, summary, and tradeoffs. Prefer 2–3 options (max 4). Mutually distinct paths that reflect real role disagreements; not restatements of the preferred option; do not invent parallel fluff options. Titles ≤8 words; summary/tradeoffs ≤2 short sentences each.
-- preferredOption: must equal one optionsConsidered[].title. Ground it in the brief, attachments, and perspectives.
+- preferredOption: must equal one optionsConsidered[].title. Ground it in the brief, attachments, and council role outputs.
 - confidence: exactly one of low, medium, high.
 - tradeoffs, unresolvedQuestions, and disagreementHighlights: plain-text strings, each ≤~400 characters.
 - At least one material cross-role disagreement in disagreementHighlights (required).
@@ -79,7 +81,7 @@ Brief:
 Attached evidence files:
 - {filename}
 
-Perspective outputs:
+Council role outputs:
 {verbatim role outputs JSON}
 ```
 
