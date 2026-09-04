@@ -18,16 +18,18 @@ Return only these plain-text strings (no nested objects or arrays):
 
 `evidence` · `inference` · `assumptions` · `recommendations` · `openQuestions`
 
-Send this into each isolated context (substitute `{Role label}` + `{focus}` from the role below). Paste **Shared grounding** into the prompt — isolated contexts will not have this file.
+Send this into each isolated context (substitute `{Role label}` + `{focus}` from the role, and `{other seats}` as one `- {label}` line per other role on the same roster — labels only, never sibling focus). Paste **Shared grounding** after the opening line, before role focus — isolated contexts will not have this file.
 
 ```text
 You are the {Role label} exploring this decision brief.
+{Shared grounding}
 Role focus: {focus}
+Do not rehash other council roles; stay in your focus. Other seats:
+{other seats}
 Return plain-text fields only: evidence, inference, assumptions, recommendations, openQuestions.
 Each field: ≤~400 characters, preferably 2–4 short bullets or short sentences.
 Recommendations: concrete and role-specific — do not mirror other roles’ likely advice.
 Do not edit this repo, run tests, git commit, or implement the recommendation.
-{Shared grounding}
 
 Decision title: {title}
 
@@ -40,7 +42,7 @@ Attached evidence files:
 
 Omit `Attached evidence files` if none.
 
-Roles come from the org council chosen in **Explore** (`get_council` / one-off roster). Substitute each role’s `label` and `focus` into the template above. The product Default council (when none else fits) is:
+Roles come from the org council chosen in **Explore** (`get_council` / one-off roster). Substitute each role’s `label` and `focus`, and list every other role’s `label` as `{other seats}` (not their focus). The product Default council (when none else fits) is:
 
 ### `customer_advocate` — Customer Advocate
 
@@ -58,20 +60,21 @@ Focus: feasibility, failure modes, security/ops cost, and integration constraint
 
 Input: **verbatim** outputs from all role passes + the same title, brief, and shared grounding. Do not paraphrase role essays before synthesizing. Forward the same cited files when possible. Return fields only — do not edit this repo.
 
-Paste **Shared grounding** into this prompt as well.
+Paste **Shared grounding** after the structure rules, before the brief.
 
 ```text
 You synthesize council role outputs into decision options.
-{Shared grounding}
-Humans review; you do not approve or commit.
 Do not edit this repo, run tests, git commit, or implement the recommendation.
 
 Structure:
-- optionsConsidered: a JSON array of objects (not a string). Each object has string fields title, summary, and tradeoffs. Prefer 2–3 options (max 4). Mutually distinct paths that reflect real role disagreements; not restatements of the preferred option; do not invent parallel fluff options. Titles ≤8 words; summary/tradeoffs ≤2 short sentences each.
+- optionsConsidered: a JSON array of objects (not a string). Each object has string fields title, summary, and tradeoffs. Prefer 2–3 options (max 4). Mutually distinct paths (including do-nothing / defer); not restatements of the preferred option; do not invent parallel fluff options. Distinct paths do not require the roles to have disagreed. Titles ≤8 words; summary/tradeoffs ≤2 short sentences each.
 - preferredOption: must equal one optionsConsidered[].title. Ground it in the brief, attachments, and council role outputs.
-- confidence: exactly one of low, medium, high.
+- confidence: exactly one of low, medium, high. High only when evidence is strong and options were real alternatives — not because roles agreed. Prefer medium or low when the brief is one-sided or evidence is thin.
 - tradeoffs, unresolvedQuestions, and disagreementHighlights: plain-text strings, each ≤~400 characters.
-- At least one material cross-role disagreement in disagreementHighlights (required).
+- disagreementHighlights: record real cross-role conflict when it exists. If independent role outputs agree, say they agreed — do not invent a fight.
+
+{Shared grounding}
+Humans review; you do not approve or commit.
 
 Decision title: {title}
 

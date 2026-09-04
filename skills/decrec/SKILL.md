@@ -2,7 +2,7 @@
 name: decrec
 description: "Records and retrieves DecRec decisions via MCP tools (list, search, create, update, follow-up, commit, decline, archive, or list/get councils). Use when recording, admitting, updating, or loading a DecRec decision or DEC-n; listing or searching org decisions; cataloging decision-worthy forks from a pasted conversation, Slack thread, or meeting transcript; exploring a DecRec brief; committing or declining a DecRec recommendation; archiving a decision; before a consequential choice that constrains later work or plausibly revisits an existing direction (search first—not before ordinary coding); when this chat settles such a choice—offer to record, do not auto-save trivia."
 metadata:
-  version: "2026.9.1"
+  version: "2026.9.4"
 ---
 
 ## Pick a Route
@@ -126,11 +126,11 @@ Run the council in this chat with [explore-prompts.md](explore-prompts.md). If t
 
 1. Brief source: from scratch → **Shape** from the thread (no gap round); existing `DEC-n` → **Load**. **Stop** if `isLocked` / `!isApproved` / `activeExploration` — locked cannot reopen in place; unapproved → approve at the `url`; in-flight → wait or cancel at the `url`. Else tip as-is (no reshape, no Densify — skip step 2).
 2. **Densify** (from-scratch only): before role passes, assess intake gaps that would materially change options or confidence (including a missing `problem` or `desiredOutcome`; e.g. who it's for, hard limits, success criteria). This fills evidence / assumptions / constraints / risks so roles start fuller — it is **not** later `openQuestions` / `unresolvedQuestions`. If gaps remain: ask **once** (prefer ≤5; skip trivia), **stop and wait**; do not confirm the brief or run roles in the same turn. On reply, fold answers into the brief; skipped / “unknown” / “proceed anyway” → `"unspecified"`. If already dense, skip this ask. Then show title + brief, wait for **yes**, then roles. If still blocked on naming any option, proceed and leave it in synthesis open questions. Otherwise do not interview beyond that.
-3. Role passes (2–4 from the chosen council) — same title and brief each; clean context per pass (parallel isolated contexts when available, else sequential). See `explore-prompts.md`. Isolated contexts do not have this skill: send the explore-prompts.md role prompt (including Shared grounding) + title/brief + cited files. Substitute `{Role label}` + `{focus}` from `get_council` / the one-off. They may read the workspace; they must not edit it.
+3. Role passes (2–4 from the chosen council) — same title and brief each; clean context per pass (parallel isolated contexts when available, else sequential). See `explore-prompts.md`. Isolated contexts do not have this skill: send the explore-prompts.md role prompt (including Shared grounding) + title/brief + cited files. Substitute `{Role label}` + `{focus}` from `get_council` / the one-off, and `{other seats}` as one `- {label}` line per other role on that roster (labels only — do not paste sibling focus). They may read the workspace; they must not edit it.
 4. Synthesis pass on verbatim role outputs (`explore-prompts.md`).
 5. Show draft; **stop** unless also asked to admit, Commit, or Decline. Named Commit / Decline on this draft implies admit first — don’t Commit / Decline the loaded `recommendation`. When admitting after Explore: new DEC → **Create** with `exploration`; existing DEC, brief changed → **Update** with `exploration`; existing DEC, same brief → **Follow-up**. Then Commit / Decline only if that was in the ask. Send `exploration` with `synthesis` plus `roles` as an array of every council role `{ id, label, result }` (never partial). Do not implement the pick unless they asked — exploring or recording is not a request to implement it.
 
-**Quality:** Prefer 2–3 options (max 4). `preferredOption` must match one `optionsConsidered[].title`; options must be mutually distinct paths (not restatements of the preferred option). After role passes: at least one material cross-role disagreement in `disagreementHighlights`. When `roles` omitted, do not invent disagreement.
+**Quality:** Prefer 2–3 options (max 4). `preferredOption` must match one `optionsConsidered[].title`; options must be mutually distinct paths (not restatements of the preferred option). After role passes: put real cross-role conflict in `disagreementHighlights` when it exists; if independent passes agreed, say they agreed — do not invent a fight. Distinct paths do not require disagreement. When `roles` omitted, do not invent disagreement.
 
 ## Load
 
